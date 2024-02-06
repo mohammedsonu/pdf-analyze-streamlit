@@ -84,7 +84,9 @@ def generate_eval(text, N, chunk):
 
     st.info("`Generating sample questions ...`")
     n = len(text)
-    starting_indices = [random.randint(0, n-chunk) for _ in range(N)]
+    # Ensure that n - chunk is non-negative
+    starting_indices = [random.randint(0, max(0, n - chunk)) for _ in range(N)]
+
     sub_sequences = [text[i:i+chunk] for i in starting_indices]
     chain = QAGenerationChain.from_llm(ChatOpenAI(temperature=0))
     eval_set = []
